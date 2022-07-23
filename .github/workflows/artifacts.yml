@@ -22,7 +22,7 @@ jobs:
       uses: Joshua-Ashton/arch-mingw-github-action@v7
       with:
         command: |
-          apt-get -y install git
+          pacman -Syu --noconfirm git
           ./prepare.sh
           ./build-master.sh
 
