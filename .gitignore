@@ -1,0 +1,5 @@
+/dxvk
+/dxvk-async
+/build
+/web/build/
+*.bak

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+    <title>DXVK Async builds</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>DXVK Async Builds</h1>
+    </div>
+    <div class="content">
+        <h1>Hello!</h1>
+        <p>
+            This is a simple web page that shows the status of the DXVK Async precompiled builds.
+        </p>
+        <p>
+            Current DXVK-Async build information: 
+            <ul>
+                <li>
+                    DXVK:
+                    <code>
+                        <a href="https://github.com/doitsujin/dxvk/commit/{GIT_DXVK_COMMIT_HASH}">{GIT_DXVK_BRANCH}/{GIT_DXVK_SHORT_COMMIT_HASH}</a>
+                    </code>
+                </li>
+                <li>
+                    DXVK-Async Patch:
+                    <code>
+                        <a href="https://github.com/Sporif/dxvk-async/commit/{GIT_DXVK_ASYNC_COMMIT_HASH}">{GIT_DXVK_ASYNC_BRANCH}/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}</a>
+                    </code>
+                </li>
+                <li>
+                    File name:
+                    <code class="long-text">
+                        <a href="dl.html">{FILE_NAME}</a>
+                    </code>
+                </li>
+                <li>
+                    SHA256:
+                    <code class="long-text">
+                        <a onclick="navigator.clipboard.writeText(this.innerHTML);alert('Copied SHA256 sum to clipboard!');">
+                            {FILE_SHA}
+                        </a>
+                    </code>
+                </li>
+            </ul>
+        </p>
+        <br>
+        <a class="download" href="dl.html">Download here</a>
+    </div>
+    <footer>
+        <p>
+            Website created by <a href="https://tretrauit.gitlab.io">tretrauit</a>
+            <br>
+            <a href="https://gitlab.com/tretrauit/dxvk-async-builder">Source code</a>
+            |
+            <a href="https://www.pixiv.net/en/artworks/99877588">Background Image</a>
+            <br>
+        </p>
+    </footer>
+</body>

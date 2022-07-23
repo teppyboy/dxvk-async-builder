@@ -1,0 +1,24 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  image: archlinux:latest
+  before_script:
+    - pacman-key --init
+    - pacman -Syu --noconfirm base-devel wine meson mingw glslang vulkan-headers git
+  script:
+    - ./prepare.sh
+    - ./build-master.sh --deploy-web
+
+pages:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - rm -rf *.bak
+    - mkdir -p ./public/build/
+    - mv ./web/ ./public/web/
+  artifacts:
+    paths:
+      - public
