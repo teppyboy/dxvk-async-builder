@@ -84,6 +84,7 @@ if [[ $opt_nopackage == 0 ]]; then
             -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" \
         api/build.json.bak > api/build.json
 
+        rm *.bak
         mkdir -p ./build/
         cp "../$package_name.tar.gz" "./build/$package_name.tar.gz"
     fi
