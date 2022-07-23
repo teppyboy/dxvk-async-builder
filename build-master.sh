@@ -146,6 +146,7 @@ if [[ $opt_gitlab == 1 ]]; then
   api=$(curl -s https://tretrauit.gitlab.io/dxvk-async-builder/api/build.json)
   if [[ $api == *"$package_name.tar.gz"* ]]; then
     echo "Already built, patching web instead..."
+    mkdir -p ./build
     cd ./build
     echo "Downloading artifact..."
     curl -OL "https://tretrauit.gitlab.io/dxvk-async-builder/build/$package_name.tar.gz"
