@@ -17,9 +17,9 @@ pages:
   stage: deploy
   image: alpine:latest
   script:
-    - rm -rf *.bak
-    - mkdir -p ./public/build/
-    - mv ./web/ ./public/web/
+    - rm -rf ./build/web/*.bak
+    - mkdir -p ./public/
+    - mv ./build/web/* ./public/
   artifacts:
     paths:
       - public

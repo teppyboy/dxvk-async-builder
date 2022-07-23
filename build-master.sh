@@ -67,8 +67,8 @@ if [[ $opt_nopackage == 0 ]]; then
     echo "SHA256: $sha256"
     if [[ $opt_deploy_web == 1 ]]; then
         echo "Setting DXVK url in webpage..."
-        cd "../web/"
-
+        cp -r ../web ./web/
+        cd ./web/
         mv index.html index.html.bak
         sed -e "s/{GIT_DXVK_BRANCH}/$dxvk_branch/g" -e "s/{GIT_DXVK_SHORT_COMMIT_HASH}/$dxvk_commit/g" -e "s/{GIT_DXVK_COMMIT_HASH}/$dxvk_long_commit/g" \
             -e "s/{GIT_DXVK_ASYNC_BRANCH}/$dxvk_async_branch/g" -e "s/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}/$dxvk_async_commit/g" -e "s/{GIT_DXVK_ASYNC_COMMIT_HASH}/$dxvk_async_long_commit/g" \
@@ -84,7 +84,7 @@ if [[ $opt_nopackage == 0 ]]; then
             -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" \
         api/build.json.bak > api/build.json
 
-        mkdir ./build/
-        cp "../build/$package_name.tar.gz" "../web/build/$package_name.tar.gz"
+        mkdir -p ./build/
+        cp "../$package_name.tar.gz" "./build/$package_name.tar.gz"
     fi
 fi

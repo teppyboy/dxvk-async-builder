@@ -68,7 +68,6 @@ footer p {
 }
 
 .content a {
-    background-color: rgba(30,30,30,0.3);
     text-decoration: none;
 }
 
@@ -90,5 +89,6 @@ footer p {
 }
 
 .content code {
-    background-color: rgba(30,30,30,0.3);
+    background-color: rgba(30,30,30,0.6);
+    padding: 0px 5px;
 }
