@@ -25,17 +25,16 @@ jobs:
           pacman -Syu --noconfirm git
           ./prepare.sh
           ./build-master.sh --github
+          echo "BUILD_TIME=$(date +%s)" >> $GITHUB_ENV
 
-    - name: Upload releases
-      id: upload-releases
-      steps:
-        - uses: actions/checkout@v2
-        - uses: CupOfTea696/gh-action-auto-release@v1.0.0
-          with:
-            title: "Release: $version"
-            tag: "$BUILD_TIME"
-            changelog: INFO.md
-            draft: false
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            BUILD_TIME: $(date +%s)
+    - name: Create releases
+      id: create-releases
+      uses: softprops/action-gh-release@v1
+      with:
+        release_name: "DXVK Async Automated Build"
+        tag_name: ${{ env.BUILD_TIME }}
+        body_path: INFO.md
+        files: |
+          ./build/*.tar.gz
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
