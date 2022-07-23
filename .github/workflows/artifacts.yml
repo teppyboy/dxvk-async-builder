@@ -1,0 +1,38 @@
+name: Artifacts (Package)
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build-artifacts:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout code
+      id: checkout-code
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+        fetch-depth: 0
+
+    - name: Setup problem matcher
+      uses: Joshua-Ashton/gcc-problem-matcher@v1
+
+    - name: Build release
+      id: build-release
+      uses: Joshua-Ashton/arch-mingw-github-action@v7
+      with:
+        command: |
+          apt-get -y install git
+          ./prepare.sh
+          ./build-master.sh
+
+    - name: Upload releases
+      id: upload-releases
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: false
+        title: "Development Build"
+        files: |
+          ./build/*.tar.gz

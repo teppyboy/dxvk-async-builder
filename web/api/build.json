@@ -1,6 +1,9 @@
 {
     "dxvk_commit": "{GIT_DXVK_COMMIT_HASH}",
     "dxvk_async_commit": "{GIT_DXVK_ASYNC_COMMIT_HASH}",
-    "download": "https://tretrauit.gitlab.io/dxvk-async-builder/build/{FILE_NAME}",
+    "download": {
+        "gitlab": "https://tretrauit.gitlab.io/dxvk-async-builder/build/{FILE_NAME}",
+        "github": null
+    },
     "sha256": "{FILE_SHA}"
 }
