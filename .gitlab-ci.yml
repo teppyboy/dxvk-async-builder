@@ -1,9 +1,5 @@
-stages:
-  - build
-  - deploy
-
-build:
-  stage: build
+pages:
+  stage: deploy
   image: archlinux:latest
   before_script:
     - pacman-key --init
@@ -12,10 +8,6 @@ build:
   script:
     - ./prepare.sh
     - ./build-master.sh --deploy-web
-
-pages:
-  stage: deploy
-  script:
     - mkdir -p ./public/
     - mv -v ./build/web/* ./public/
   artifacts:
