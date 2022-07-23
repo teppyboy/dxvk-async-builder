@@ -8,7 +8,7 @@ build:
   before_script:
     - pacman-key --init
     - echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
-    - pacman -Syu --noconfirm base-devel wine meson mingw glslang vulkan-headers git
+    - pacman -Syu --noconfirm base-devel wine meson mingw-w64-toolchain mingw-w64 glslang vulkan-headers git
   script:
     - ./prepare.sh
     - ./build-master.sh --deploy-web
