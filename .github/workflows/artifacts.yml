@@ -24,15 +24,18 @@ jobs:
         command: |
           pacman -Syu --noconfirm git
           ./prepare.sh
-          ./build-master.sh
+          ./build-master.sh --github
 
     - name: Upload releases
       id: upload-releases
-      uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: false
-        title: "Development Build"
-        files: |
-          ./build/*.tar.gz
+      steps:
+        - uses: actions/checkout@v2
+        - uses: CupOfTea696/gh-action-auto-release@v1.0.0
+          with:
+            title: "Release: $version"
+            tag: "$BUILD_TIME"
+            changelog: INFO.md
+            draft: false
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            BUILD_TIME: $(date +%s)

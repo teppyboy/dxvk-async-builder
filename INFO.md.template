@@ -1,0 +1,6 @@
+# DXVK Async Build
+
++ DXVK: [`{GIT_DXVK_BRANCH}/{GIT_DXVK_SHORT_COMMIT_HASH}`](https://github.com/doitsujin/dxvk/commit/{GIT_DXVK_COMMIT_HASH})
++ DXVK-Async Patch: [`{GIT_DXVK_ASYNC_BRANCH}/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}`](https://github.com/Sporif/dxvk-async/commit/{GIT_DXVK_ASYNC_COMMIT_HASH})
++ File name: `{FILE_NAME}`
++ SHA256: `{FILE_SHA}`
