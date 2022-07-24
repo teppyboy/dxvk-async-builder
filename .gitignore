@@ -2,6 +2,7 @@
 /dxvk-async
 /build
 /web/build/
+/.vscode
 *.bak
 
 INFO.md

@@ -123,7 +123,7 @@ pack_web_dxvk() {
   mv api/build.json api/build.json.bak
   sed -e "s/{GIT_DXVK_BRANCH}/$dxvk_branch/g" -e "s/{GIT_DXVK_SHORT_COMMIT_HASH}/$dxvk_commit/g" -e "s/{GIT_DXVK_COMMIT_HASH}/$dxvk_long_commit/g" \
       -e "s/{GIT_DXVK_ASYNC_BRANCH}/$dxvk_async_branch/g" -e "s/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}/$dxvk_async_commit/g" -e "s/{GIT_DXVK_ASYNC_COMMIT_HASH}/$dxvk_async_long_commit/g" \
-      -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" \
+      -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" -e "s/{PACKAGE_NAME}/$package_name/g" \
   api/build.json.bak > api/build.json
 
   rm -f *.bak
@@ -135,14 +135,14 @@ pack_api_dxvk() {
   echo "Generating fake API..."
   sed -e "s/{GIT_DXVK_BRANCH}/$dxvk_branch/g" -e "s/{GIT_DXVK_SHORT_COMMIT_HASH}/$dxvk_commit/g" -e "s/{GIT_DXVK_COMMIT_HASH}/$dxvk_long_commit/g" \
       -e "s/{GIT_DXVK_ASYNC_BRANCH}/$dxvk_async_branch/g" -e "s/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}/$dxvk_async_commit/g" -e "s/{GIT_DXVK_ASYNC_COMMIT_HASH}/$dxvk_async_long_commit/g" \
-      -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" \
+      -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" -e "s/{PACKAGE_NAME}/$package_name/g" \
   web/api/build.json > build.json
 }
 
 pack_changelog_dxvk() {
   sed -e "s/{GIT_DXVK_BRANCH}/$dxvk_branch/g" -e "s/{GIT_DXVK_SHORT_COMMIT_HASH}/$dxvk_commit/g" -e "s/{GIT_DXVK_COMMIT_HASH}/$dxvk_long_commit/g" \
       -e "s/{GIT_DXVK_ASYNC_BRANCH}/$dxvk_async_branch/g" -e "s/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}/$dxvk_async_commit/g" -e "s/{GIT_DXVK_ASYNC_COMMIT_HASH}/$dxvk_async_long_commit/g" \
-      -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" \
+      -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" -e "s/{PACKAGE_NAME}/$package_name/g" \
   INFO.md.template > INFO.md
 }
 
@@ -162,6 +162,22 @@ if [[ $opt_gitlab == 1 ]]; then
     sha256=$(sha256sum "$package_name.tar.gz" | cut -d " " -f 1)
     cd ..
     pack_web_dxvk
+    exit 0
+  fi
+fi
+if [[ $opt_github == 1 ]]; then
+  echo "GitHub mode."
+  api=$(curl -s https://api.github.com/repos/teppyboy/dxvk-async-builder/releases/latest)
+  if [[ $api == *"$package_name"* ]]; then
+    echo "Already built, patching web instead..."
+    mkdir -p ./build
+    cd ./build
+    echo "Downloading artifact..."
+    curl -OL "https://github.com/teppyboy/dxvk-async-builder/releases/download/$package_name/$package_name.tar.gz"
+    sha256=$(sha256sum "$package_name.tar.gz" | cut -d " " -f 1)
+    cd ..
+    pack_changelog_dxvk
+    pack_api_dxvk
     exit 0
   fi
 fi

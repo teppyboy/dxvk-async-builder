@@ -3,9 +3,10 @@
     "dxvk_commit_short": "{GIT_DXVK_SHORT_COMMIT_HASH}",
     "dxvk_async_commit": "{GIT_DXVK_ASYNC_COMMIT_HASH}",
     "dxvk_async_commit_short": "{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}",
+    "file_name": "{FILE_NAME}",
     "download": {
         "gitlab": "https://tretrauit.gitlab.io/dxvk-async-builder/build/{FILE_NAME}",
-        "github": "https://github.com/teppyboy/dxvk-async-builder/releases/latest/download/{FILE_NAME}"
+        "github": "https://github.com/teppyboy/dxvk-async-builder/releases/download/{PACKAGE_NAME}/{FILE_NAME}"
     },
     "sha256": "{FILE_SHA}"
 }
