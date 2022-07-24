@@ -4,3 +4,5 @@
 + DXVK-Async Patch: [`{GIT_DXVK_ASYNC_BRANCH}/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}`](https://github.com/Sporif/dxvk-async/commit/{GIT_DXVK_ASYNC_COMMIT_HASH})
 + File name: `{FILE_NAME}`
 + SHA256: `{FILE_SHA}`
+
+> `build.json` is included in case you want to use that as an API to get release information.

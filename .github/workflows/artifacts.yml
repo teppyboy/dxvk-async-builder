@@ -37,5 +37,6 @@ jobs:
         fail_on_unmatched_files: true
         files: |
           ./build/*.tar.gz
+          ./build.json
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
