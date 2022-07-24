@@ -78,6 +78,7 @@ footer p {
     --padding: 16px;
     padding: var(--padding);
     margin-right: var(--padding);
+    margin-bottom: var(--padding);
 }
 
 .content .download .github {
