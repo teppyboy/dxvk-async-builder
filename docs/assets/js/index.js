@@ -39,7 +39,7 @@ function applyApiStatus(api) {
         .replace("{GIT_DXVK_SHORT_COMMIT_HASH}", api.dxvk_commit_short)
         .replace("{GIT_DXVK_BRANCH}", "master"); // TODO
     dxvkAsyncStatus.setAttribute("href", dxvkAsyncStatus.getAttribute("href").replace("{GIT_DXVK_ASYNC_COMMIT_HASH}", api.dxvk_async_commit));
-    dxvkAsyncStatus.innerHTML = dxvkStatus.innerHTML
+    dxvkAsyncStatus.innerHTML = dxvkAsyncStatus.innerHTML
         .replace("{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}", api.dxvk_async_commit_short)
         .replace("{GIT_DXVK_ASYNC_BRANCH}", "master"); // TODO
     fileName.innerHTML = api.file_name;
