@@ -162,7 +162,7 @@ if [[ $opt_gitlab == 1 ]]; then
     sha256=$(sha256sum "$package_name.tar.gz" | cut -d " " -f 1)
     cd ..
     pack_web_dxvk
-    exit 0
+    return 0
   fi
 fi
 if [[ $opt_github == 1 ]]; then
@@ -179,7 +179,7 @@ if [[ $opt_github == 1 ]]; then
     export PACKAGE_NAME=$package_name
     pack_changelog_dxvk
     pack_api_dxvk
-    exit 0
+    return 0
   fi
 fi
 if [[ $opt_nobuild == 0 ]]; then
