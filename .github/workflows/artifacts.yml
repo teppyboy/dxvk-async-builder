@@ -1,11 +1,11 @@
 name: Artifacts (Package)
 
 on: 
+  schedule:
+    - cron: '*/30 * * * *'
   push
   pull_request
   workflow_dispatch
-  schedule:
-    - cron: '*/30 * * * *'
 
 jobs:
   build-artifacts:
