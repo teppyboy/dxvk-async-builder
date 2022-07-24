@@ -114,9 +114,12 @@ pack_web_dxvk() {
       -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" \
   index.html.bak > index.html
 
-  mv dl.html dl.html.bak
-  sed -e "s/{FILE_NAME}/$package_name.tar.gz/g" dl.html.bak > dl.html
+  mv gitlab_dl.html gitlab_dl.html.bak
+  sed -e "s/{FILE_NAME}/$package_name.tar.gz/g" gitlab_dl.html.bak > gitlab_dl.html
   
+  mv github_dl.html github_dl.html.bak
+  sed -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{PACKAGE_NAME}/$package_name/g" github_dl.html.bak > github_dl.html
+
   mv api/build.json api/build.json.bak
   sed -e "s/{GIT_DXVK_BRANCH}/$dxvk_branch/g" -e "s/{GIT_DXVK_SHORT_COMMIT_HASH}/$dxvk_commit/g" -e "s/{GIT_DXVK_COMMIT_HASH}/$dxvk_long_commit/g" \
       -e "s/{GIT_DXVK_ASYNC_BRANCH}/$dxvk_async_branch/g" -e "s/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}/$dxvk_async_commit/g" -e "s/{GIT_DXVK_ASYNC_COMMIT_HASH}/$dxvk_async_long_commit/g" \

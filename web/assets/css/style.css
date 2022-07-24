@@ -72,8 +72,25 @@ footer p {
 }
 
 .content .download {
+    position: relative;
+    display: inline-block;
     background-color: rgba(30,30,30,0.8);
-    padding: 16px;
+    --padding: 16px;
+    padding: var(--padding);
+    margin-right: var(--padding);
+}
+
+.content .download .github {
+    position: relative;
+    bottom: -2px;
+    margin-left: 4px;
+    width: 24px;
+}
+
+.content .download .gitlab {
+    position: relative;
+    bottom: -4px;
+    width: 24px;
 }
 
 .content .long-text {

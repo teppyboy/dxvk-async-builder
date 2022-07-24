@@ -31,9 +31,10 @@ jobs:
       id: create-releases
       uses: softprops/action-gh-release@v1
       with:
-        release_name: "DXVK Async Automated Build"
-        tag_name: ${{ env.BUILD_TIME }}
+        name: "DXVK Async Automated Build"
+        tag_name: ${{ env.PACKAGE_NAME }}
         body_path: INFO.md
+        fail_on_unmatched_files: true
         files: |
           ./build/*.tar.gz
       env:
