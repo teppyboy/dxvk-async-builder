@@ -1,11 +1,11 @@
 name: Artifacts (Package)
 
 on: 
+  push:
+  pull_request:
+  workflow_dispatch:
   schedule:
     - cron: '*/30 * * * *'
-  push
-  pull_request
-  workflow_dispatch
 
 jobs:
   build-artifacts:
@@ -40,6 +40,7 @@ jobs:
         tag_name: ${{ env.PACKAGE_NAME }}
         body_path: INFO.md
         fail_on_unmatched_files: true
+        draft: false
         files: |
           ./build/*.tar.gz
           ./build.json
