@@ -44,40 +44,38 @@ while [ $# -gt 0 ]; do
 done
 
 update_dxvk() {
-  if [ -d dxvk ]; then
-    cd ./dxvk
-    echo "Reverting file changes (in case already patched with DXVK-Async)..."
-    git reset --hard
-    echo "Updating DXVK..."
-    git pull
-    dxvk_commit=$(git rev-parse --short HEAD)
-    dxvk_long_commit=$(git rev-parse HEAD)
-    dxvk_branch=$(git rev-parse --abbrev-ref HEAD)
-    cd ..
-  else
-    git clone --depth 1 --branch master
+  if [ ! -d dxvk ]; then
+    git clone --depth 1 --branch master dxvk
   fi
+  cd ./dxvk
+  echo "Reverting file changes (in case already patched with DXVK-Async)..."
+  git reset --hard
+  echo "Updating DXVK..."
+  git pull
+  dxvk_commit=$(git rev-parse --short HEAD)
+  dxvk_long_commit=$(git rev-parse HEAD)
+  dxvk_branch=$(git rev-parse --abbrev-ref HEAD)
+  cd ..
 }
 
 update_dxvk_async() {
-  if [ -d dxvk ]; then
-    cd ./dxvk
-    echo "Updating DXVK-Async..."
-    git pull
-    dxvk_async_commit=$(git rev-parse --short HEAD)
-    dxvk_async_long_commit=$(git rev-parse HEAD)
-    dxvk_async_branch=$(git rev-parse --abbrev-ref HEAD)
-    cd ..
-  else
-    git clone --depth 1 --branch master
+  if [ ! -d dxvk-async ]; then
+    git clone --depth 1 --branch master dxvk-async
   fi
+  cd ./dxvk-async
+  echo "Updating DXVK-Async..."
+  git pull
+  dxvk_async_commit=$(git rev-parse --short HEAD)
+  dxvk_async_long_commit=$(git rev-parse HEAD)
+  dxvk_async_branch=$(git rev-parse --abbrev-ref HEAD)
+  cd ..
 }
 
 patch_dxvk() {
   if [ -d dxvk ]; then
     cd ./dxvk
     echo "Patching DXVK..."
-    git apply ../patches/dxvk/dxvk.patch
+    git apply ../dxvk-async/dxvk-async.patch
     git diff
     cd ..
   fi
@@ -120,14 +118,22 @@ pack_web_dxvk() {
   sed -e "s/{FILE_NAME}/$package_name.tar.gz/g" dl.html.bak > dl.html
   
   mv api/build.json api/build.json.bak
-  sed -e "s/{GIT_DXVK_COMMIT_HASH}/$dxvk_long_commit/g" \
-      -e "s/{GIT_DXVK_ASYNC_COMMIT_HASH}/$dxvk_async_long_commit/g" \
+  sed -e "s/{GIT_DXVK_BRANCH}/$dxvk_branch/g" -e "s/{GIT_DXVK_SHORT_COMMIT_HASH}/$dxvk_commit/g" -e "s/{GIT_DXVK_COMMIT_HASH}/$dxvk_long_commit/g" \
+      -e "s/{GIT_DXVK_ASYNC_BRANCH}/$dxvk_async_branch/g" -e "s/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}/$dxvk_async_commit/g" -e "s/{GIT_DXVK_ASYNC_COMMIT_HASH}/$dxvk_async_long_commit/g" \
       -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" \
   api/build.json.bak > api/build.json
 
   rm *.bak
   mkdir -p ./build/
   cp "../$package_name.tar.gz" "./build/$package_name.tar.gz"
+}
+
+pack_api_dxvk() {
+  echo "Generating fake API..."
+  sed -e "s/{GIT_DXVK_BRANCH}/$dxvk_branch/g" -e "s/{GIT_DXVK_SHORT_COMMIT_HASH}/$dxvk_commit/g" -e "s/{GIT_DXVK_COMMIT_HASH}/$dxvk_long_commit/g" \
+      -e "s/{GIT_DXVK_ASYNC_BRANCH}/$dxvk_async_branch/g" -e "s/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}/$dxvk_async_commit/g" -e "s/{GIT_DXVK_ASYNC_COMMIT_HASH}/$dxvk_async_long_commit/g" \
+      -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" \
+  web/api/build.json > build.json
 }
 
 pack_changelog_dxvk() {
@@ -157,12 +163,15 @@ if [[ $opt_gitlab == 1 ]]; then
   fi
 fi
 if [[ $opt_nobuild == 0 ]]; then
+  patch_dxvk
   build_dxvk
 fi
 if [[ $opt_nopackage == 0 ]]; then
   pack_dxvk
   if [[ $opt_github == 1 ]]; then
+    export PACKAGE_NAME=$package_name
     pack_changelog_dxvk
+    pack_api_dxvk
   fi
   if [[ $opt_deploy_web == 1 ]]; then
     pack_web_dxvk

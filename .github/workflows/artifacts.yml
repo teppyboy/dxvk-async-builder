@@ -24,8 +24,8 @@ jobs:
         command: |
           pacman -Syu --noconfirm git
           ./prepare.sh
-          ./build-master.sh --github
-          echo "BUILD_TIME=$(date +%s)" >> $GITHUB_ENV
+          . ./build-master.sh --github
+          echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
 
     - name: Create releases
       id: create-releases

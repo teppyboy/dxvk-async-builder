@@ -3,4 +3,6 @@
 /build
 /web/build/
 *.bak
+
 INFO.md
+build.json
