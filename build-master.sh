@@ -85,10 +85,10 @@ build_dxvk() {
   if [ -d dxvk ]; then
     cd ./dxvk
     echo "Building DXVK-Async... (args: $build_args)"
-    rm -r "./dxvk-master"
+    rm -rf "./dxvk-master"
     ./package-release.sh $build_args
     cd ../build
-    rm -r "./$package_name"
+    rm -rf "./$package_name"
     mv "./dxvk-master" "./$package_name"
     cd ..
   fi
@@ -123,7 +123,7 @@ pack_web_dxvk() {
       -e "s/{FILE_NAME}/$package_name.tar.gz/g" -e "s/{FILE_SHA}/$sha256/g" \
   api/build.json.bak > api/build.json
 
-  rm *.bak
+  rm -f *.bak
   mkdir -p ./build/
   cp "../$package_name.tar.gz" "./build/$package_name.tar.gz"
 }
