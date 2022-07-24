@@ -176,6 +176,7 @@ if [[ $opt_github == 1 ]]; then
     curl -OL "https://github.com/teppyboy/dxvk-async-builder/releases/download/$package_name/$package_name.tar.gz"
     sha256=$(sha256sum "$package_name.tar.gz" | cut -d " " -f 1)
     cd ..
+    export PACKAGE_NAME=$package_name
     pack_changelog_dxvk
     pack_api_dxvk
     exit 0
