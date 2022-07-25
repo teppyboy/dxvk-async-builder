@@ -162,7 +162,7 @@ if [[ $opt_gitlab == 1 ]]; then
     sha256=$(sha256sum "$package_name.tar.gz" | cut -d " " -f 1)
     cd ..
     pack_web_dxvk
-    return 0
+    exit 0
   fi
 fi
 if [[ $opt_github == 1 ]]; then
