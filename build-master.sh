@@ -44,14 +44,15 @@ while [ $# -gt 0 ]; do
 done
 
 update_dxvk() {
-  if [ ! -d dxvk ]; then
-    git clone --depth 1 --branch master dxvk
+  if [ ! -d "./dxvk" ]; then
+    git clone --depth 1 --branch master https://github.com/doitsujin/dxvk
   fi
   cd ./dxvk
   echo "Reverting file changes (in case already patched with DXVK-Async)..."
   git reset --hard
   echo "Updating DXVK..."
   git pull
+  git submodule update --init --recursive
   dxvk_commit=$(git rev-parse --short HEAD)
   dxvk_long_commit=$(git rev-parse HEAD)
   dxvk_branch=$(git rev-parse --abbrev-ref HEAD)
@@ -59,8 +60,8 @@ update_dxvk() {
 }
 
 update_dxvk_async() {
-  if [ ! -d dxvk-async ]; then
-    git clone --depth 1 --branch master dxvk-async
+  if [ ! -d "./dxvk-async" ]; then
+    git clone --depth 1 --branch master https://github.com/Sporif/dxvk-async
   fi
   cd ./dxvk-async
   echo "Updating DXVK-Async..."
@@ -72,17 +73,16 @@ update_dxvk_async() {
 }
 
 patch_dxvk() {
-  if [ -d dxvk ]; then
+  if [ -d "./dxvk" ]; then
     cd ./dxvk
     echo "Patching DXVK..."
     git apply ../dxvk-async/dxvk-async.patch
-    git diff
     cd ..
   fi
 }
 
 build_dxvk() {
-  if [ -d dxvk ]; then
+  if [ -d "./dxvk" ]; then
     cd ./dxvk
     echo "Building DXVK-Async... (args: $build_args)"
     rm -rf "./dxvk-master"
@@ -91,6 +91,7 @@ build_dxvk() {
     rm -rf "./$package_name"
     mv "./dxvk-master" "./$package_name"
     cd ..
+    echo "$package_name" > DXVK_VERSION
   fi
 }
 

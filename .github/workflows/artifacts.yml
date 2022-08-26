@@ -24,13 +24,18 @@ jobs:
 
     - name: Build release
       id: build-release
-      uses: Joshua-Ashton/arch-mingw-github-action@v7
+      uses: Joshua-Ashton/arch-mingw-github-action@v8
       with:
         command: |
           pacman -Syu --noconfirm git
-          ./prepare.sh
           . ./build-master.sh --github
           echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
+
+    - name: Commit back to the repository
+      uses: stefanzweifel/git-auto-commit-action@v4
+      if: steps.auto-commit-action.outputs.changes_detected == 'true'
+      with:
+        commit_message: Automatic bump compiled DXVK version.
 
     - name: Create releases
       id: create-releases
