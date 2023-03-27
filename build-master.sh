@@ -67,7 +67,7 @@ update_dxvk() {
 
 update_dxvk_async() {
   if [ ! -d "./dxvk-async" ]; then
-    git clone --depth 1 --branch main $DXVK_ASYNC_MIRROR
+    git clone --depth 1 --branch main $DXVK_ASYNC_MIRROR dxvk-async
   fi
   cd ./dxvk-async
   echo "Updating DXVK-Async..."
