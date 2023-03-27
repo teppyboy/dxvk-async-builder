@@ -7,7 +7,7 @@ pages:
     - pacman -Syu --noconfirm base-devel wine meson mingw-w64-toolchain mingw-w64 glslang vulkan-headers git
   script:
     - ./prepare.sh
-    - ./build-master.sh --gitlab --deploy-web
+    - ./build-master.sh --gitlab --deploy-web --force
     - mkdir -p ./public/
     - mv -v ./build/web/* ./public/
   artifacts:

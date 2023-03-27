@@ -3,12 +3,15 @@
 opt_nopackage=0
 opt_devbuild=0
 opt_deploy_web=0
+opt_force=0
 opt_nobuild=0
 opt_gitlab=0
 opt_github=0
 opt_buildid=false
 
 build_args="master ../build/ --no-package"
+
+DXVK_ASYNC_MIRROR="https://gitlab.com/Ph42oN/dxvk-gplasync"
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -26,6 +29,9 @@ while [ $# -gt 0 ]; do
     ;;
   "--no-build")
     opt_nobuild=1
+    ;;
+  "--force")
+    opt_force=1
     ;;
   "--deploy-web")
     opt_deploy_web=1
@@ -61,7 +67,7 @@ update_dxvk() {
 
 update_dxvk_async() {
   if [ ! -d "./dxvk-async" ]; then
-    git clone --depth 1 --branch master https://github.com/Sporif/dxvk-async
+    git clone --depth 1 --branch main $DXVK_ASYNC_MIRROR
   fi
   cd ./dxvk-async
   echo "Updating DXVK-Async..."
@@ -76,7 +82,18 @@ patch_dxvk() {
   if [ -d "./dxvk" ]; then
     cd ./dxvk
     echo "Patching DXVK..."
-    git apply ../dxvk-async/dxvk-async.patch
+    git apply --reject --whitespace=fix ../dxvk-async/dxvk-gplasync.patch
+    ret_val=$?
+    if [ $ret_val -ne 0 ]; then
+      echo "Patch error, exiting..."
+      echo "This is most likely caused by the patch itself."
+      echo "Consider reporting at: $DXVK_ASYNC_MIRROR"
+      if [[ $opt_force == 1 ]]; then
+        echo "!!!FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK!!!"
+      else
+        exit $ret_val
+      fi
+    fi
     cd ..
   fi
 }
