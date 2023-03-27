@@ -82,16 +82,24 @@ patch_dxvk() {
   if [ -d "./dxvk" ]; then
     cd ./dxvk
     echo "Patching DXVK..."
-    git apply --reject --whitespace=fix ../dxvk-async/dxvk-gplasync.patch
-    ret_val=$?
-    if [ $ret_val -ne 0 ]; then
-      echo "Patch error, exiting..."
-      echo "This is most likely caused by the patch itself."
-      echo "Consider reporting at: $DXVK_ASYNC_MIRROR"
-      if [[ $opt_force == 1 ]]; then
-        echo "!!!FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK!!!"
-      else
-        exit $ret_val
+    if [[ $opt_github == 1 ]] && [[ $opt_force == 1 ]]; then
+      echo "!!!FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK!!!"
+      echo "Applying GitHub workaround..."
+      git apply --reject --whitespace=fix ../dxvk-async/dxvk-gplasync.patch &
+      sleep 10
+      echo "Workaround completed."
+    else
+      git apply --reject --whitespace=fix ../dxvk-async/dxvk-gplasync.patch
+      ret_val=$?
+      if [ $ret_val -ne 0 ]; then
+        echo "Patch error, exiting..."
+        echo "This is most likely caused by the patch itself."
+        echo "Consider reporting at: $DXVK_ASYNC_MIRROR"
+        if [[ $opt_force == 1 ]]; then
+          echo "!!!FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK!!!"
+        else
+          exit $ret_val
+        fi
       fi
     fi
     cd ..
