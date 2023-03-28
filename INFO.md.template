@@ -1,7 +1,7 @@
 # Build status
 
 + DXVK: [`{GIT_DXVK_BRANCH}/{GIT_DXVK_SHORT_COMMIT_HASH}`](https://github.com/doitsujin/dxvk/commit/{GIT_DXVK_COMMIT_HASH})
-+ DXVK-Async Patch: [`{GIT_DXVK_ASYNC_BRANCH}/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}`](https://github.com/Sporif/dxvk-async/commit/{GIT_DXVK_ASYNC_COMMIT_HASH})
++ DXVK-Async Patch: [`{GIT_DXVK_ASYNC_BRANCH}/{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}`](https://gitlab.com/Ph42oN/dxvk-gplasync/-/commit/{GIT_DXVK_ASYNC_COMMIT_HASH})
 + File name: [`{FILE_NAME}`](https://github.com/teppyboy/dxvk-async-builder/releases/download/{PACKAGE_NAME}/{FILE_NAME})
 + SHA256: `{FILE_SHA}`
 
@@ -16,7 +16,6 @@
       "dxvk_async_commit_short": "{GIT_DXVK_ASYNC_SHORT_COMMIT_HASH}",
       "file_name": "{FILE_NAME}",
       "download": {
-          "gitlab": "https://tretrauit.gitlab.io/dxvk-async-builder/build/{FILE_NAME}",
           "github": "https://github.com/teppyboy/dxvk-async-builder/releases/download/{PACKAGE_NAME}/{FILE_NAME}"
       },
       "sha256": "{FILE_SHA}"
