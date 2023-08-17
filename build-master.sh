@@ -11,6 +11,7 @@ opt_buildid=false
 
 build_args="master ../build/ --no-package"
 
+PATCH_FILE="dxvk-gplasync-2.2-4.patch"
 DXVK_ASYNC_MIRROR="https://gitlab.com/Ph42oN/dxvk-gplasync"
 
 while [ $# -gt 0 ]; do
@@ -70,6 +71,8 @@ update_dxvk_async() {
     git clone --depth 1 --branch main $DXVK_ASYNC_MIRROR dxvk-async
   fi
   cd ./dxvk-async
+  echo "Reverting file changes..."
+  git reset --hard
   echo "Updating DXVK-Async..."
   git pull
   dxvk_async_commit=$(git rev-parse --short HEAD)
@@ -80,16 +83,21 @@ update_dxvk_async() {
 
 patch_dxvk() {
   if [ -d "./dxvk" ]; then
-    cd ./dxvk
+    echo "Fixing dxvk-gplasync patches..."
+    cd ./dxvk-async
+    git apply --reject --whitespace=fix ../patches/dxvk-gplasync.patch
+    echo "Fix complete."
+    cd ../dxvk
     echo "Patching DXVK..."
     if [[ $opt_github == 1 ]] && [[ $opt_force == 1 ]]; then
       echo "!!!FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK!!!"
       echo "Applying GitHub workaround..."
-      git apply --reject --whitespace=fix ../dxvk-async/dxvk-gplasync.patch &
+      git apply --reject --whitespace=fix ../dxvk-async/patches/$PATCH_FILE &
+      git apply --reject --whitespace=fix ../dxvk-async/patches/global-dxvk.conf.patch &
       sleep 10
       echo "Workaround completed."
     else
-      git apply --reject --whitespace=fix ../dxvk-async/dxvk-gplasync.patch
+      git apply --reject --whitespace=fix ../dxvk-async/patches/$PATCH_FILE
       ret_val=$?
       if [ $ret_val -ne 0 ]; then
         echo "Patch error, exiting..."
@@ -101,6 +109,7 @@ patch_dxvk() {
           exit $ret_val
         fi
       fi
+      git apply --reject --whitespace=fix ../dxvk-async/patches/global-dxvk.conf.patch
     fi
     cd ..
   fi

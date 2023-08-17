@@ -1,0 +1,52 @@
+diff --git a/patches/dxvk-gplasync-2.2-4.patch b/patches/dxvk-gplasync-2.2-4.patch
+index 90dcb11..fab3370 100644
+--- a/patches/dxvk-gplasync-2.2-4.patch
++++ b/patches/dxvk-gplasync-2.2-4.patch
+@@ -298,6 +298,7 @@ index 373db325..adb79d28 100644
+      useRawSsbo            = config.getOption<Tristate>("dxvk.useRawSsbo",             Tristate::Auto);
+      maxChunkSize          = config.getOption<int32_t> ("dxvk.maxChunkSize",           0);
+      hud                   = config.getOption<std::string>("dxvk.hud", "");
++     tearFree              = config.getOption<Tristate>("dxvk.tearFree",               Tristate::Auto);
+ -  }
+ +
+ +    if (env::getEnvVar("DXVK_GPLASYNCCACHE") == "1")
+diff --git a/patches/global-dxvk.conf.patch b/patches/global-dxvk.conf.patch
+index b0ef8ff..87c67df 100644
+--- a/patches/global-dxvk.conf.patch
++++ b/patches/global-dxvk.conf.patch
+@@ -9,24 +9,29 @@ index 9e9446c5..6efe969a 100644
+      // Open the file if it exists
+      std::ifstream stream(str::topath(filePath.c_str()).c_str());
+  
+--    if (!stream)
++-    if (!stream && confLine.empty())
+ -      return config;
+-+    if (!stream) {
+++    if (!stream && confLine.empty()) {
+ +      filePath = "/home/" + env::getEnvVar("USER") + "/.config/dxvk.conf";
+ +      stream.open(str::topath(filePath.c_str()).c_str());
+ +#ifdef _WIN32
+-+      if (!stream) {
+++      if (!stream && confLine.empty()) {
+ +		    filePath = env::getEnvVar("APPDATA") + "/dxvk.conf";
+ +        stream.open(str::topath(filePath.c_str()).c_str());
+ +      }
+ +#endif
+ +
+-+		  if (!stream)
+++		  if (!stream && confLine.empty())
+ +			  return config;
+ +    }
+      
+-     // Inform the user that we loaded a file, might
+-     // help when debugging configuration issues
++     // Initialize parser context
++     ConfigContext ctx;
++     ctx.active = true;
++
++     if (stream) {
++       // Inform the user that we loaded a file, might
++       // help when debugging configuration issues
+ -- 
+ 2.39.1
+ 
