@@ -11,7 +11,7 @@ opt_buildid=false
 
 build_args="master ../build/ --no-package"
 
-PATCH_FILE="dxvk-gplasync-2.2-4.patch"
+PATCH_FILE="dxvk-gplasync-master.patch"
 DXVK_ASYNC_MIRROR="https://gitlab.com/Ph42oN/dxvk-gplasync"
 
 while [ $# -gt 0 ]; do
@@ -68,7 +68,7 @@ update_dxvk() {
 
 update_dxvk_async() {
   if [ ! -d "./dxvk-async" ]; then
-    git clone --depth 1 --branch main $DXVK_ASYNC_MIRROR dxvk-async
+    git clone --depth 1 --branch test $DXVK_ASYNC_MIRROR dxvk-async
   fi
   cd ./dxvk-async
   echo "Reverting file changes..."
@@ -88,6 +88,7 @@ patch_dxvk() {
     git apply --reject --whitespace=fix ../patches/dxvk-gplasync.patch
     echo "Fix complete."
     cd ../dxvk
+    #cd ./dxvk
     echo "Patching DXVK..."
     if [[ $opt_github == 1 ]] && [[ $opt_force == 1 ]]; then
       echo "!!!FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK!!!"
