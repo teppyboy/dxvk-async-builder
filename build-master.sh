@@ -83,12 +83,12 @@ update_dxvk_async() {
 
 patch_dxvk() {
   if [ -d "./dxvk" ]; then
-    echo "Fixing dxvk-gplasync patches..."
-    cd ./dxvk-async
-    git apply --reject --whitespace=fix ../patches/dxvk-gplasync.patch
-    echo "Fix complete."
-    cd ../dxvk
-    #cd ./dxvk
+    # echo "Fixing dxvk-gplasync patches..."
+    #cd ./dxvk-async
+    # git apply --reject --whitespace=fix ../patches/dxvk-gplasync.patch
+    # echo "Fix complete."
+    # cd ../dxvk
+    cd ./dxvk
     echo "Patching DXVK..."
     if [[ $opt_github == 1 ]] && [[ $opt_force == 1 ]]; then
       echo "!!!FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK!!!"
