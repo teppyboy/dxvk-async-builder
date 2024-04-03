@@ -128,7 +128,6 @@ build_dxvk() {
     rm -rf "./$package_name"
     mv "./dxvk-master" "./$package_name"
     cd ..
-    echo "$package_name" > DXVK_VERSION
   fi
 }
 
