@@ -31,12 +31,6 @@ jobs:
           . ./build-master.sh --github --force
           echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
 
-    - name: Commit back to the repository
-      uses: stefanzweifel/git-auto-commit-action@v4
-      if: steps.auto-commit-action.outputs.changes_detected == 'true'
-      with:
-        commit_message: Automatic bump compiled DXVK version.
-
     - name: Create releases
       id: create-releases
       uses: softprops/action-gh-release@v1

@@ -13,6 +13,7 @@ build_args="master ../build/ --no-package"
 
 PATCH_FILE="dxvk-gplasync-master.patch"
 DXVK_ASYNC_MIRROR="https://gitlab.com/Ph42oN/dxvk-gplasync"
+DXVK_ASYNC_BRANCH="main"
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -68,13 +69,14 @@ update_dxvk() {
 
 update_dxvk_async() {
   if [ ! -d "./dxvk-async" ]; then
-    git clone --depth 1 --branch test $DXVK_ASYNC_MIRROR dxvk-async
+    git clone --depth 1 $DXVK_ASYNC_MIRROR dxvk-async
   fi
   cd ./dxvk-async
   echo "Reverting file changes..."
   git reset --hard
   echo "Updating DXVK-Async..."
   git pull
+  git switch $DXVK_ASYNC_BRANCH
   dxvk_async_commit=$(git rev-parse --short HEAD)
   dxvk_async_long_commit=$(git rev-parse HEAD)
   dxvk_async_branch=$(git rev-parse --abbrev-ref HEAD)
@@ -84,18 +86,18 @@ update_dxvk_async() {
 patch_dxvk() {
   if [ -d "./dxvk" ]; then
     # echo "Fixing dxvk-gplasync patches..."
-    #cd ./dxvk-async
+    # cd ./dxvk-async
     # git apply --reject --whitespace=fix ../patches/dxvk-gplasync.patch
     # echo "Fix complete."
     # cd ../dxvk
     cd ./dxvk
     echo "Patching DXVK..."
     if [[ $opt_github == 1 ]] && [[ $opt_force == 1 ]]; then
-      echo "!!!FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK!!!"
+      echo "!!! FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK !!!"
       echo "Applying GitHub workaround..."
       git apply --reject --whitespace=fix ../dxvk-async/patches/$PATCH_FILE &
       git apply --reject --whitespace=fix ../dxvk-async/patches/global-dxvk.conf.patch &
-      sleep 10
+      sleep 5
       echo "Workaround completed."
     else
       git apply --reject --whitespace=fix ../dxvk-async/patches/$PATCH_FILE
@@ -105,7 +107,7 @@ patch_dxvk() {
         echo "This is most likely caused by the patch itself."
         echo "Consider reporting at: $DXVK_ASYNC_MIRROR"
         if [[ $opt_force == 1 ]]; then
-          echo "!!!FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK!!!"
+          echo "!!! FORCING BUILD EVEN PATCH FAILS CAN CAUSE ERROR IN DXVK !!!"
         else
           exit $ret_val
         fi
